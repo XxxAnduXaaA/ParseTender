@@ -2,6 +2,14 @@ package com.example.parsetender.parser;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -15,19 +23,22 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 public class Parser {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                         return null;
                     }
+
                     @Override
                     public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-                            throws CertificateException {}
+                            throws CertificateException {
+                    }
 
                     @Override
                     public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-                            throws CertificateException {}
+                            throws CertificateException {
+                    }
                 }
         };
 
@@ -54,12 +65,21 @@ public class Parser {
         // All hosts will be valid
         HttpsURLConnection.setDefaultHostnameVerifier(validHosts);
 
-        // Попытка получить страницу с использованием Jsoup
-        try {
-            Document doc = Jsoup.connect("https://etp.tatneft.ru").get();
-            System.out.println(doc.title()); // Вывод заголовка страницы
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        WebDriver driver = new ChromeDriver();
+
+        String good = "Арматура";
+
+        driver.get("https://etp.tatneft.ru/pls/tzp/f?p=220:562:1997614442949::::P562_OPEN_MODE,GLB_NAV_ROOT_ID,GLB_NAV_ID:,12920020,12920020");
+        Thread.sleep(5000);
+
+        // Найти элемент input по его ID
+        WebElement inputElement = driver.findElement(By.id("P562_SEARCH_FIELD"));
+
+// Добавить текст в элемент
+
+        inputElement.sendKeys(good);
+        inputElement.sendKeys(Keys.ENTER);
+
+
     }
 }
