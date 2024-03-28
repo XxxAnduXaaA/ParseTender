@@ -1,5 +1,7 @@
 package com.example.parsetender.parser;
 
+import com.example.parsetender.parser.sites.Tatneft;
+import com.example.parsetender.parser.sites.TenderPro;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.By;
@@ -65,21 +67,14 @@ public class Parser {
         // All hosts will be valid
         HttpsURLConnection.setDefaultHostnameVerifier(validHosts);
 
-        WebDriver driver = new ChromeDriver();
-
         String good = "Арматура";
 
-        driver.get("https://etp.tatneft.ru/pls/tzp/f?p=220:562:1997614442949::::P562_OPEN_MODE,GLB_NAV_ROOT_ID,GLB_NAV_ID:,12920020,12920020");
-        Thread.sleep(5000);
+        Tatneft tatneft = new Tatneft(good);
+        tatneft.start();
 
-        // Найти элемент input по его ID
-        WebElement inputElement = driver.findElement(By.id("P562_SEARCH_FIELD"));
+//        TenderPro tenderPro = new TenderPro(good);
 
-// Добавить текст в элемент
-
-        inputElement.sendKeys(good);
-        inputElement.sendKeys(Keys.ENTER);
-
+//        tenderPro.start();
 
     }
 }
